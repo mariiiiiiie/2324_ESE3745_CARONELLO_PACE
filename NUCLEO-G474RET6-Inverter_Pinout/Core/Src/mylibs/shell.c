@@ -7,7 +7,11 @@
 #include "usart.h"
 #include "mylibs/shell.h"
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <string.h>
+
+extern TIM_HandleTypeDef htim1;
 
 uint8_t prompt[]="user@Nucleo-STM32G474RET6>>";
 uint8_t started[]=
@@ -19,9 +23,11 @@ uint8_t newline[]="\r\n";
 uint8_t backspace[]="\b \b";
 uint8_t cmdNotFound[]="Command not found\r\n";
 uint8_t brian[]="Brian is in the kitchen\r\n";
+uint8_t speedNotAvailable[]="speed not available\r\n";
 uint8_t uartRxReceived;
 uint8_t uartRxBuffer[UART_RX_BUFFER_SIZE];
 uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
+
 
 char	 	cmdBuffer[CMD_BUFFER_SIZE];
 int 		idx_cmd;
@@ -76,9 +82,24 @@ void Shell_Loop(void){
 			int uartTxStringLength = snprintf((char *)uartTxBuffer, UART_TX_BUFFER_SIZE, "Print all available functions here\r\n");
 			HAL_UART_Transmit(&huart2, uartTxBuffer, uartTxStringLength, HAL_MAX_DELAY);
 		}
+		else if (strcmp(argv[0], "speed")==0){
+			uint32_t speed = atoi(argv[1]);
+
+			if (speed > 3000){
+				HAL_UART_Transmit(&huart2,speedNotAvailable , sizeof(speedNotAvailable), HAL_MAX_DELAY);
+			}
+			else {
+				uint32_t rpmMax = 3000;
+				uint32_t pulse1 = ((uint32_t)htim1.Instance->ARR * (uint32_t)(100*speed/rpmMax))/100;
+				uint32_t pulse2 = ((uint32_t)htim1.Instance->ARR * (uint32_t)(100-100*speed/rpmMax))/100;
+				__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pulse1/100);
+				__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pulse2);
+			}
+		}
 		else{
 			HAL_UART_Transmit(&huart2, cmdNotFound, sizeof(cmdNotFound), HAL_MAX_DELAY);
 		}
+
 		HAL_UART_Transmit(&huart2, prompt, sizeof(prompt), HAL_MAX_DELAY);
 		newCmdReady = 0;
 	}
