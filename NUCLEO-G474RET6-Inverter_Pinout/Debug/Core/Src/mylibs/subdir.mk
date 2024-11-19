@@ -5,13 +5,13 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/mylibs/shell.c 
+../Core/Src/mylibs/shellv2.c 
 
 OBJS += \
-./Core/Src/mylibs/shell.o 
+./Core/Src/mylibs/shellv2.o 
 
 C_DEPS += \
-./Core/Src/mylibs/shell.d 
+./Core/Src/mylibs/shellv2.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
@@ -21,7 +21,7 @@ Core/Src/mylibs/%.o Core/Src/mylibs/%.su Core/Src/mylibs/%.cyclo: ../Core/Src/my
 clean: clean-Core-2f-Src-2f-mylibs
 
 clean-Core-2f-Src-2f-mylibs:
-	-$(RM) ./Core/Src/mylibs/shell.cyclo ./Core/Src/mylibs/shell.d ./Core/Src/mylibs/shell.o ./Core/Src/mylibs/shell.su
+	-$(RM) ./Core/Src/mylibs/shellv2.cyclo ./Core/Src/mylibs/shellv2.d ./Core/Src/mylibs/shellv2.o ./Core/Src/mylibs/shellv2.su
 
 .PHONY: clean-Core-2f-Src-2f-mylibs
 

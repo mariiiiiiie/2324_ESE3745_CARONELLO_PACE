@@ -19,13 +19,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "mylibs/shell.h"
+#include "mylibs/shellv2.h"
+//#include "mylibs/shellv2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,13 +42,14 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern uint32_t pulseGoal_1;
+extern uint32_t pulseGoal_2;
+uint16_t ADC_VAL[3];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,6 +60,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int isADC=0;
 
 /* USER CODE END 0 */
 
@@ -89,6 +93,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC2_Init();
   MX_ADC1_Init();
   MX_TIM1_Init();
@@ -97,18 +102,11 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+	HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
+	HAL_ADC_Start_DMA(&hadc1,(uint16_t*)&ADC_VAL,3);
+
 	Shell_Init();
-	HAL_TIM_Base_Start(&htim1);
-
-	//Channel 1
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
-
-	//Channel 2
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
-
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,6 +114,10 @@ int main(void)
 	while (1)
 	{
 		Shell_Loop();
+		if(isADC){
+			printf("Valeur U,V,BUS IMES:\t%lu\t%lu\t%lu\r\n",ADC_VAL[0],ADC_VAL[1],ADC_VAL[2]);
+			isADC=0;
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -183,7 +185,20 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-
+	uint32_t pulse_1 = htim1.Instance->CCR1 ;
+	uint32_t pulse_2 = htim1.Instance->CCR2;
+	if(htim->Instance== TIM2){
+		if(pulse_1!= pulseGoal_1){
+			int8_t sign_1 = pulse_1 > pulseGoal_1?
+					-1:1;
+			__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pulse_1 + sign_1);
+		}
+		if(pulse_2!=pulseGoal_2){
+			int8_t sign_2 = pulse_2 > pulseGoal_2?
+					-1:1;
+			__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pulse_2 + sign_2);
+		}
+	}
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6) {
     HAL_IncTick();

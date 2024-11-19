@@ -1,0 +1,10 @@
+../Core/Src/mylibs/shellv2.c:81:6:Shell_Init	8	static
+../Core/Src/mylibs/shellv2.c:93:6:Shell_Loop	16	static
+../Core/Src/mylibs/shellv2.c:215:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/mylibs/shellv2.c:225:6:subfunct_WherisBrian	8	static
+../Core/Src/mylibs/shellv2.c:229:6:subfunct_help	32	static
+../Core/Src/mylibs/shellv2.c:235:6:subfunct_speed	16	static
+../Core/Src/mylibs/shellv2.c:244:6:subfunct_start	8	static
+../Core/Src/mylibs/shellv2.c:264:6:subfunct_stop	8	static
+../Core/Src/mylibs/shellv2.c:275:6:subfunct_printADC	4	static
+../Core/Src/mylibs/shellv2.c:284:6:debug	16	static
