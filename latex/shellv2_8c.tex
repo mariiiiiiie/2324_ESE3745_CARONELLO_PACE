@@ -1,0 +1,241 @@
+\doxysection{NUCLEO-\/\+G474\+RET6-\/\+Inverter\+\_\+\+Pinout/\+Core/\+Src/mylibs/shellv2.c File Reference}
+\hypertarget{shellv2_8c}{}\label{shellv2_8c}\index{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Src/mylibs/shellv2.c@{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Src/mylibs/shellv2.c}}
+
+
+Ce fichier contient le shell.  
+
+
+{\ttfamily \#include "{}mylibs/shellv2.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{shellv2_8c_ae21a9518b4dd62d2baeab430c89a657a}\label{shellv2_8c_ae21a9518b4dd62d2baeab430c89a657a} 
+\#define {\bfseries V1}
+\item 
+\Hypertarget{shellv2_8c_a4af1b6159e447ba72652bb7fcdfa726e}\label{shellv2_8c_a4af1b6159e447ba72652bb7fcdfa726e} 
+\#define {\bfseries ESC}~0x1B
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{shellv2_8c_a20a8a4868ca7d57a3a0730a29aba5d31}\label{shellv2_8c_a20a8a4868ca7d57a3a0730a29aba5d31} 
+enum {\bfseries Escape\+State} \{ \newline
+{\bfseries STATE\+\_\+\+WAIT\+\_\+\+ESC}
+, {\bfseries STATE\+\_\+\+WAIT\+\_\+\+BRACKET}
+, {\bfseries STATE\+\_\+\+WAIT\+\_\+\+FINAL\+\_\+\+CHAR}
+, {\bfseries ARROW\+\_\+\+UP}
+, \newline
+{\bfseries ARROW\+\_\+\+DOWN}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{shellv2_8c_a1e1a7212cd1e25d36ce85620f03f996e}\label{shellv2_8c_a1e1a7212cd1e25d36ce85620f03f996e} 
+void {\bfseries Shell\+\_\+\+Init} (void)
+\item 
+\Hypertarget{shellv2_8c_a9f70d5542e7f7f470ff7cd7d482caeb7}\label{shellv2_8c_a9f70d5542e7f7f470ff7cd7d482caeb7} 
+void {\bfseries Shell\+\_\+\+Loop} (void)
+\item 
+\Hypertarget{shellv2_8c_ae494a9643f29b87d6d81e5264e60e57b}\label{shellv2_8c_ae494a9643f29b87d6d81e5264e60e57b} 
+void {\bfseries HAL\+\_\+\+UART\+\_\+\+Rx\+Cplt\+Callback} (UART\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}huart)
+\item 
+\Hypertarget{shellv2_8c_ae3d55cd7d3706720be411ba0c1fd6e7b}\label{shellv2_8c_ae3d55cd7d3706720be411ba0c1fd6e7b} 
+void {\bfseries subfunct\+\_\+\+Wheris\+Brian} (void)
+\item 
+\Hypertarget{shellv2_8c_aafefd2011167e1398aa2f2c905c9f6c7}\label{shellv2_8c_aafefd2011167e1398aa2f2c905c9f6c7} 
+void {\bfseries subfunct\+\_\+help} (void)
+\item 
+\Hypertarget{shellv2_8c_abff053d86c2c5f9f847eb4c1dfbc8924}\label{shellv2_8c_abff053d86c2c5f9f847eb4c1dfbc8924} 
+void {\bfseries subfunct\+\_\+speed} (void)
+\item 
+\Hypertarget{shellv2_8c_acd76974a337ce8ee96cf070535a2139b}\label{shellv2_8c_acd76974a337ce8ee96cf070535a2139b} 
+void {\bfseries subfunct\+\_\+start} (void)
+\item 
+\Hypertarget{shellv2_8c_a7ee954e9323f7d242d8b41c9536dcbdb}\label{shellv2_8c_a7ee954e9323f7d242d8b41c9536dcbdb} 
+void {\bfseries subfunct\+\_\+stop} (void)
+\item 
+\Hypertarget{shellv2_8c_abe3afa35493539d0b69596cbe8bf0c09}\label{shellv2_8c_abe3afa35493539d0b69596cbe8bf0c09} 
+void {\bfseries subfunct\+\_\+print\+ADC} (void)
+\item 
+\Hypertarget{shellv2_8c_aebb6c3cdb78425cf8d47f18de0f85989}\label{shellv2_8c_aebb6c3cdb78425cf8d47f18de0f85989} 
+void {\bfseries subfunct\+\_\+asservI} (void)
+\item 
+\Hypertarget{shellv2_8c_a92b0c13fd987e2998028a4a0ca38ee7e}\label{shellv2_8c_a92b0c13fd987e2998028a4a0ca38ee7e} 
+void {\bfseries debug} (char \texorpdfstring{$\ast$}{*}debug\+Type, char \texorpdfstring{$\ast$}{*}message)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{shellv2_8c_a0b767b1329868765ceba84c1d07b39a2}\label{shellv2_8c_a0b767b1329868765ceba84c1d07b39a2} 
+Escape\+State {\bfseries esc\+State} = STATE\+\_\+\+WAIT\+\_\+\+ESC
+\item 
+\Hypertarget{shellv2_8c_af6f35715e98f1d30ad8a7474f03970a5}\label{shellv2_8c_af6f35715e98f1d30ad8a7474f03970a5} 
+uint8\+\_\+t {\bfseries uart\+\_\+data}
+\item 
+\Hypertarget{shellv2_8c_a8b893859891afe33d4bba72ba06fd381}\label{shellv2_8c_a8b893859891afe33d4bba72ba06fd381} 
+uint8\+\_\+t {\bfseries prompt} \mbox{[}$\,$\mbox{]} ="{}user@Nucleo-\/STM32\+G474\+RET6$>$$>$"{}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{shellv2_8c_a835573497a60b314a9bf5a6fcac9602a}{started}} \mbox{[}$\,$\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_a98a2c452a5e7053154e9f49a4cad4e98}\label{shellv2_8c_a98a2c452a5e7053154e9f49a4cad4e98} 
+uint8\+\_\+t {\bfseries newline} \mbox{[}$\,$\mbox{]} ="{}\textbackslash{}r\textbackslash{}n"{}
+\item 
+\Hypertarget{shellv2_8c_a73072efaa96faae50fbceb96dc409a43}\label{shellv2_8c_a73072efaa96faae50fbceb96dc409a43} 
+uint8\+\_\+t {\bfseries backspace} \mbox{[}$\,$\mbox{]} ="{}\textbackslash{}b \textbackslash{}b"{}
+\item 
+\Hypertarget{shellv2_8c_a25205e7c6d817620c1d9f7351a817a04}\label{shellv2_8c_a25205e7c6d817620c1d9f7351a817a04} 
+uint8\+\_\+t {\bfseries cmd\+Not\+Found} \mbox{[}$\,$\mbox{]} ="{}Command not found\textbackslash{}r\textbackslash{}n"{}
+\item 
+\Hypertarget{shellv2_8c_aa149a9fe62ad86984f172b5a209d2e2b}\label{shellv2_8c_aa149a9fe62ad86984f172b5a209d2e2b} 
+char {\bfseries brian} \mbox{[}$\,$\mbox{]} ="{}Brian is in the kitchen\textbackslash{}r\textbackslash{}n"{}
+\item 
+\Hypertarget{shellv2_8c_a9f01ffb72325e6328a2239d6de7f4abc}\label{shellv2_8c_a9f01ffb72325e6328a2239d6de7f4abc} 
+uint8\+\_\+t {\bfseries uart\+Rx\+Received}
+\item 
+\Hypertarget{shellv2_8c_a2542ac6d4440b9e1c4a6435c55c79df3}\label{shellv2_8c_a2542ac6d4440b9e1c4a6435c55c79df3} 
+uint8\+\_\+t {\bfseries uart\+Rx\+Buffer} \mbox{[}UART\+\_\+\+RX\+\_\+\+BUFFER\+\_\+\+SIZE\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_a3f98e2db2fa0d8f0cfd87b887576207f}\label{shellv2_8c_a3f98e2db2fa0d8f0cfd87b887576207f} 
+uint8\+\_\+t {\bfseries uart\+Tx\+Buffer} \mbox{[}UART\+\_\+\+TX\+\_\+\+BUFFER\+\_\+\+SIZE\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_aefb47a5ae84f1124f1bd58d7a4593204}\label{shellv2_8c_aefb47a5ae84f1124f1bd58d7a4593204} 
+uint32\+\_\+t {\bfseries d\+Pulse}
+\item 
+\Hypertarget{shellv2_8c_ac3095198fff11a3ee0acbd9b65a53cef}\label{shellv2_8c_ac3095198fff11a3ee0acbd9b65a53cef} 
+uint32\+\_\+t {\bfseries ADC\+\_\+\+VAL} \mbox{[}3\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_afb3c530ffe2036107349af98a2a27343}\label{shellv2_8c_afb3c530ffe2036107349af98a2a27343} 
+int16\+\_\+t {\bfseries I\+\_\+\+CONS} =0
+\item 
+\Hypertarget{shellv2_8c_ab361057bd55f1aa5ad82a92b70d9fbdc}\label{shellv2_8c_ab361057bd55f1aa5ad82a92b70d9fbdc} 
+uint8\+\_\+t {\bfseries cmd\+History} \mbox{[}CMD\+\_\+\+HISTORY\+\_\+\+SIZE\mbox{]}\mbox{[}CMD\+\_\+\+BUFFER\+\_\+\+SIZE\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_ac1cafc02436f4da48c7ac8bf973895d6}\label{shellv2_8c_ac1cafc02436f4da48c7ac8bf973895d6} 
+uint8\+\_\+t {\bfseries cmd\+History\+\_\+index\+\_\+save} =0
+\item 
+\Hypertarget{shellv2_8c_ae55c5a81aa897caaa1258292196d9bf3}\label{shellv2_8c_ae55c5a81aa897caaa1258292196d9bf3} 
+uint8\+\_\+t {\bfseries cmd\+History\+\_\+index\+\_\+nav} =0
+\item 
+\Hypertarget{shellv2_8c_a2267d4e92bc86275a0ccdc7ab0281846}\label{shellv2_8c_a2267d4e92bc86275a0ccdc7ab0281846} 
+uint32\+\_\+t {\bfseries rpm\+Max} = 3000
+\item 
+\Hypertarget{shellv2_8c_a04809c3d9dde9ff20cbddde761a306ea}\label{shellv2_8c_a04809c3d9dde9ff20cbddde761a306ea} 
+uint32\+\_\+t {\bfseries pulse\+Goal\+\_\+1}
+\item 
+\Hypertarget{shellv2_8c_a5f186b4d37e6556bf8fc16541598e0b7}\label{shellv2_8c_a5f186b4d37e6556bf8fc16541598e0b7} 
+uint32\+\_\+t {\bfseries pulse\+Goal\+\_\+2}
+\item 
+\Hypertarget{shellv2_8c_a37a27b523e8aff433c8a4adda2295f0d}\label{shellv2_8c_a37a27b523e8aff433c8a4adda2295f0d} 
+char \texorpdfstring{$\ast$}{*} {\bfseries error} = "{}AN ISSUE OCCURED"{}
+\item 
+\Hypertarget{shellv2_8c_a6f08e42956268faa086887c7a7b9851e}\label{shellv2_8c_a6f08e42956268faa086887c7a7b9851e} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+PWMs} = "{}Timer PWM "{}
+\item 
+\Hypertarget{shellv2_8c_a99e5c36fe7470300419387f37d32e850}\label{shellv2_8c_a99e5c36fe7470300419387f37d32e850} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+TIMERs} = "{}Timer Updater Pulse"{}
+\item 
+\Hypertarget{shellv2_8c_afe89b8ce9afce0da84eceda08bee5fe3}\label{shellv2_8c_afe89b8ce9afce0da84eceda08bee5fe3} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+PWM\+\_\+1} = "{}PWM CHANNEL 1"{}
+\item 
+\Hypertarget{shellv2_8c_a7598641e74d0cb1acb7f7f73117a5825}\label{shellv2_8c_a7598641e74d0cb1acb7f7f73117a5825} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+PWMN\+\_\+1} = "{}PWMN CHANNEL 1"{}
+\item 
+\Hypertarget{shellv2_8c_a14c3edbe114cc67e7309abda3fc90809}\label{shellv2_8c_a14c3edbe114cc67e7309abda3fc90809} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+PWMN\+\_\+2} = "{}PWM CHANNEL 2"{}
+\item 
+\Hypertarget{shellv2_8c_a430735bd3e2a3bac558ab994f98ddb6f}\label{shellv2_8c_a430735bd3e2a3bac558ab994f98ddb6f} 
+char \texorpdfstring{$\ast$}{*} {\bfseries info\+\_\+\+PWM\+\_\+2} = "{}PWWN CHANNEL 2"{}
+\item 
+\Hypertarget{shellv2_8c_a5aec5e1493e0f50510a8a387dc9e17fb}\label{shellv2_8c_a5aec5e1493e0f50510a8a387dc9e17fb} 
+char \texorpdfstring{$\ast$}{*} {\bfseries stop\+Message} = "{}PWM and Timer Updater Pulse"{}
+\item 
+\Hypertarget{shellv2_8c_ac792bdb3c70407d67ba592ac8048b277}\label{shellv2_8c_ac792bdb3c70407d67ba592ac8048b277} 
+char \texorpdfstring{$\ast$}{*} {\bfseries speed\+Not\+Available} = "{}Too high value, max speed instead"{}
+\item 
+\Hypertarget{shellv2_8c_aa6ed5f1da4e320595aa8cf7357398491}\label{shellv2_8c_aa6ed5f1da4e320595aa8cf7357398491} 
+char \texorpdfstring{$\ast$}{*} {\bfseries already\+Started} = "{}PWM \& Timer Updater Pulse are already started"{}
+\item 
+\Hypertarget{shellv2_8c_a841df70eada22afe6d6a99bad162b3c1}\label{shellv2_8c_a841df70eada22afe6d6a99bad162b3c1} 
+char \texorpdfstring{$\ast$}{*} {\bfseries already\+Stop} = "{}PWM \& Timer Updater Pulse are already stopped"{}
+\item 
+\Hypertarget{shellv2_8c_a2b2210c695cf966b41ece7bf14ae62c1}\label{shellv2_8c_a2b2210c695cf966b41ece7bf14ae62c1} 
+char \texorpdfstring{$\ast$}{*} {\bfseries changement\+\_\+d\+Pulse} = "{}Changement de d\+Pulse"{}
+\item 
+\Hypertarget{shellv2_8c_a755c320507955b333af8919b434c80dd}\label{shellv2_8c_a755c320507955b333af8919b434c80dd} 
+char {\bfseries cmd\+Buffer} \mbox{[}CMD\+\_\+\+BUFFER\+\_\+\+SIZE\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_a53cf6ebd0848970afbf70c176bec9314}\label{shellv2_8c_a53cf6ebd0848970afbf70c176bec9314} 
+int {\bfseries idx\+\_\+cmd}
+\item 
+\Hypertarget{shellv2_8c_a097621c7310da407a3cc4a6ae4568c56}\label{shellv2_8c_a097621c7310da407a3cc4a6ae4568c56} 
+char \texorpdfstring{$\ast$}{*} {\bfseries argv} \mbox{[}MAX\+\_\+\+ARGS\mbox{]}
+\item 
+\Hypertarget{shellv2_8c_ad1447518f4372828b8435ae82e48499e}\label{shellv2_8c_ad1447518f4372828b8435ae82e48499e} 
+int {\bfseries argc} = 0
+\item 
+\Hypertarget{shellv2_8c_a1d71425d9df28667d528833a4db10432}\label{shellv2_8c_a1d71425d9df28667d528833a4db10432} 
+char \texorpdfstring{$\ast$}{*} {\bfseries token}
+\item 
+\Hypertarget{shellv2_8c_a83a0d9b47b936e62d1d68aea902883ac}\label{shellv2_8c_a83a0d9b47b936e62d1d68aea902883ac} 
+int {\bfseries new\+Cmd\+Ready} = 0
+\item 
+\Hypertarget{shellv2_8c_a8a0fb8df7451295305e066f475e462d1}\label{shellv2_8c_a8a0fb8df7451295305e066f475e462d1} 
+int {\bfseries is\+Find} =0
+\item 
+\Hypertarget{shellv2_8c_a091a738f6a6e4bf833b67d43a91ae841}\label{shellv2_8c_a091a738f6a6e4bf833b67d43a91ae841} 
+int {\bfseries is\+Started} =0
+\item 
+\Hypertarget{shellv2_8c_afb93abd014fd499c105763cabae9e89a}\label{shellv2_8c_afb93abd014fd499c105763cabae9e89a} 
+int {\bfseries is\+ASSERV\+\_\+I} = 0
+\item 
+\mbox{\hyperlink{struct_m_a_p_p_e_r}{MAPPER}} \mbox{\hyperlink{shellv2_8c_aa2319d17ea7c54d8feb1475633740ee8}{mapping}} \mbox{[}$\,$\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ce fichier contient le shell. 
+
+\begin{DoxyDate}{Date}
+Created on\+: Nov 8, 2024 
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+\+: marie \& romingo 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{shellv2_8c_aa2319d17ea7c54d8feb1475633740ee8}\index{shellv2.c@{shellv2.c}!mapping@{mapping}}
+\index{mapping@{mapping}!shellv2.c@{shellv2.c}}
+\doxysubsubsection{\texorpdfstring{mapping}{mapping}}
+{\footnotesize\ttfamily \label{shellv2_8c_aa2319d17ea7c54d8feb1475633740ee8} 
+\mbox{\hyperlink{struct_m_a_p_p_e_r}{MAPPER}} mapping\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}help"{}},\ \textcolor{stringliteral}{"{}Print\ every\ function\ available"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_help\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}WhereisBrian"{}},\ \textcolor{stringliteral}{"{}If\ you\ don't\ know\ where\ brian\ is"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_WherisBrian\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}speed"{}},\ \textcolor{stringliteral}{"{}Change\ the\ speed\ of\ the\ DC\ motor"{}},\ \textcolor{stringliteral}{"{}str:RPM"{}},\ subfunct\_speed\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}start"{}},\ \textcolor{stringliteral}{"{}Start\ PWM,\ DC\ Motor\ set\ up\ with\ the\ minimum\ speed"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_start\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}stop"{}},\ \textcolor{stringliteral}{"{}Stop\ PWM"{}},\textcolor{stringliteral}{"{}None"{}},subfunct\_stop\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}adc"{}},\textcolor{stringliteral}{"{}Défini\ l'incrément\ \ pour\ la\ transition\ de\ a\ consigne\ moteur"{}},\textcolor{stringliteral}{"{}int:dPulse"{}},subfunct\_printADC\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}asservI"{}},\textcolor{stringliteral}{"{}None"{}},\textcolor{stringliteral}{"{}int:\ mA"{}},subfunct\_asservI\},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\Hypertarget{shellv2_8c_a835573497a60b314a9bf5a6fcac9602a}\index{shellv2.c@{shellv2.c}!started@{started}}
+\index{started@{started}!shellv2.c@{shellv2.c}}
+\doxysubsubsection{\texorpdfstring{started}{started}}
+{\footnotesize\ttfamily \label{shellv2_8c_a835573497a60b314a9bf5a6fcac9602a} 
+uint8\+\_\+t started\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*"{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n|\ Welcome\ on\ Nucleo-\/STM32G474\ |"{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*"{}}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n"{}}}
+
+\end{DoxyCode}

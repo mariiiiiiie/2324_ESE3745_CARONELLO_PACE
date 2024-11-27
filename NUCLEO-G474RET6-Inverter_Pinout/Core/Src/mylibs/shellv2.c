@@ -1,8 +1,9 @@
-/*
- * shellv2.c
- *
- *  Created on: Nov 8, 2024
- *      Author: romingo
+
+/*!
+ * \file shellv2.c
+ * \brief Ce fichier contient le shell
+ * \date Created on: Nov 8, 2024
+ * \author: marie & romingo
  */
 #define V1
 
@@ -39,6 +40,8 @@ uint8_t uartTxBuffer[UART_TX_BUFFER_SIZE];
 
 /****** NEW ARGS ******/
 extern uint32_t dPulse;
+uint32_t ADC_VAL[3];
+int16_t I_CONS=0;
 
 uint8_t cmdHistory[CMD_HISTORY_SIZE][CMD_BUFFER_SIZE];
 uint8_t cmdHistory_index_save=0;
@@ -67,6 +70,7 @@ char*		token;
 int 		newCmdReady = 0;
 int 		isFind=0;
 int 		isStarted=0;
+int 		isASSERV_I = 0;
 
 MAPPER mapping[] = {
 		{"help", "Print every function available","None", subfunct_help},
@@ -74,7 +78,8 @@ MAPPER mapping[] = {
 		{"speed", "Change the speed of the DC motor", "str:RPM", subfunct_speed},
 		{"start", "Start PWM, DC Motor set up with the minimum speed","None", subfunct_start},
 		{"stop", "Stop PWM","None",subfunct_stop},
-		{"printADC","Défini l'incrément  pour la transition de a consigne moteur","int:dPulse",subfunct_printADC},
+		{"adc","Défini l'incrément  pour la transition de a consigne moteur","int:dPulse",subfunct_printADC},
+		{"asservI","None","int: mA",subfunct_asservI},
 };
 
 
@@ -87,7 +92,6 @@ void Shell_Init(void){
 	HAL_UART_Receive_IT(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE);
 	HAL_UART_Transmit(&huart2, started, strlen((char *)started), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, prompt, strlen((char *)prompt), HAL_MAX_DELAY);
-	subfunct_start();
 }
 
 void Shell_Loop(void){
@@ -97,9 +101,6 @@ void Shell_Loop(void){
 		case ASCII_CR: // Nouvelle ligne, instruction à traiter
 			HAL_UART_Transmit(&huart2, newline, sizeof(newline), HAL_MAX_DELAY);
 			cmdBuffer[idx_cmd] = '\0';
-			//On copie la commande dans l'historique
-			strcpy(cmdHistory[cmdHistory_index_save % CMD_HISTORY_SIZE], cmdBuffer);
-			cmdHistory_index_save++;
 			argc = 0;
 			token = strtok(cmdBuffer, " ");
 			while(token!=NULL){
@@ -120,31 +121,6 @@ void Shell_Loop(void){
 		}
 		uartRxReceived = 0;
 	}
-
-
-	else if(uartRxReceived==2){
-		uartRxReceived=1;
-		switch (escState) {
-
-		case ARROW_DOWN:
-			if(cmdHistory_index_nav==0){break;}
-			strcpy(uartRxBuffer,cmdHistory[cmdHistory_index_nav]);			//On recupere le messsage sauvegarde et on l'associe au buffer actuel
-			idx_cmd = sizeof(cmdHistory[cmdHistory_index_nav])/sizeof(cmdHistory[cmdHistory_index_nav][0]);			//On actualise le idx_cmd pour pouvoir ecrire ou modifier le msg
-			cmdHistory_index_nav--;
-			HAL_UART_Transmit(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
-			break;
-		case ARROW_UP:
-			if(cmdHistory_index_nav==CMD_HISTORY_SIZE){break;}
-			strcpy(uartRxBuffer,cmdHistory[cmdHistory_index_nav]);			//On recupere le messsage sauvegarde et on l'associe au buffer actuel
-			idx_cmd = sizeof(cmdHistory[cmdHistory_index_nav])/sizeof(cmdHistory[cmdHistory_index_nav][0]);			//On actualise le idx_cmd pour pouvoir ecrire ou modifier le msg
-			cmdHistory_index_nav++;
-			HAL_UART_Transmit(&huart2, uartRxBuffer, UART_RX_BUFFER_SIZE, HAL_MAX_DELAY);
-			break;
-		}
-	}
-
-
-
 
 	if(newCmdReady){
 		for (int i=0;i<sizeof(mapping) / sizeof(mapping[0]);i++){
@@ -246,8 +222,7 @@ void subfunct_start(void){
 	HAL_TIM_Base_Start(&htim1)!=HAL_OK? debug(ERROR,error):debug(START,info_PWMs);
 	HAL_TIM_Base_Start_IT(&htim2)!=HAL_OK? debug(ERROR,error):debug(START,info_TIMERs);//Timer for smooth transition pulses
 
-	pulseGoal_1 = htim1.Instance->ARR/2;
-	pulseGoal_2 = htim1.Instance->ARR/2;
+
 	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, pulseGoal_1);
 	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, pulseGoal_2);
 	//Channel 1
@@ -270,11 +245,18 @@ void subfunct_stop(void){
 	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_1)!=HAL_OK? debug(ERROR,error):debug(STOP,info_PWMN_1);
 	HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_2)!=HAL_OK? debug(ERROR,error):debug(STOP,info_PWM_2);
 	HAL_TIMEx_PWMN_Stop(&htim1, TIM_CHANNEL_2)!=HAL_OK? debug(ERROR,error):debug(STOP,info_PWMN_2);
+	HAL_ADC_Stop_DMA(&hadc1);
+
 	isStarted=0;
+	isASSERV_I=0;
 }
 void subfunct_printADC(void){
-
+	HAL_ADC_Start_DMA(&hadc1,ADC_VAL,3);
 	return;
+}
+void subfunct_asservI(void){
+	I_CONS =(int16_t)atoi(argv[1]);
+	isASSERV_I=1;
 }
 /************************************************************************************************
  * 										DEBUG

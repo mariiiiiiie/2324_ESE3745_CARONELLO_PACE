@@ -1,0 +1,31 @@
+\doxysection{shell.\+h}
+\hypertarget{shell_8h_source}{}\label{shell_8h_source}\index{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Inc/mylibs/shell.h@{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Inc/mylibs/shell.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ shell.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Oct\ 1,\ 2023}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ nicolas}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ INC\_MYLIBS\_SHELL\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ INC\_MYLIBS\_SHELL\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ UART\_RX\_BUFFER\_SIZE\ 1}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ UART\_TX\_BUFFER\_SIZE\ 64}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ CMD\_BUFFER\_SIZE\ 64}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ MAX\_ARGS\ 9}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ ASCII\_LF\ 0x0A\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ LF\ =\ line\ feed,\ saut\ de\ ligne}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ ASCII\_CR\ 0x0D\ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ CR\ =\ carriage\ return,\ retour\ chariot}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#define\ ASCII\_BACK\ 0x08\ \ \ \ \ \ \ \ \ }\textcolor{comment}{//\ BACK\ =\ Backspace}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{extern}\ TIM\_HandleTypeDef\ htim1;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{extern}\ TIM\_HandleTypeDef\ htim2;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keywordtype}{void}\ Shell\_Init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ Shell\_Loop(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_MYLIBS\_SHELL\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

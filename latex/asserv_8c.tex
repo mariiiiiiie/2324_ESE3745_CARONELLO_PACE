@@ -1,0 +1,49 @@
+\doxysection{NUCLEO-\/\+G474\+RET6-\/\+Inverter\+\_\+\+Pinout/\+Core/\+Src/mylibs/asserv.c File Reference}
+\hypertarget{asserv_8c}{}\label{asserv_8c}\index{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Src/mylibs/asserv.c@{NUCLEO-\/G474RET6-\/Inverter\_Pinout/Core/Src/mylibs/asserv.c}}
+
+
+Ce fichier contient les fonctions d\textquotesingle{}asservissement.  
+
+
+{\ttfamily \#include "{}mylibs/asserv.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{asserv_8c_a57e871b126c47e99b51b53c096a45d71}\label{asserv_8c_a57e871b126c47e99b51b53c096a45d71} 
+void {\bfseries asserv\+Courant} (uint32\+\_\+t \texorpdfstring{$\ast$}{*}ADC\+\_\+\+VAL)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{asserv_8c_afb3c530ffe2036107349af98a2a27343}\label{asserv_8c_afb3c530ffe2036107349af98a2a27343} 
+int16\+\_\+t {\bfseries I\+\_\+\+CONS}
+\item 
+\Hypertarget{asserv_8c_a04809c3d9dde9ff20cbddde761a306ea}\label{asserv_8c_a04809c3d9dde9ff20cbddde761a306ea} 
+uint32\+\_\+t {\bfseries pulse\+Goal\+\_\+1}
+\item 
+\Hypertarget{asserv_8c_a5f186b4d37e6556bf8fc16541598e0b7}\label{asserv_8c_a5f186b4d37e6556bf8fc16541598e0b7} 
+uint32\+\_\+t {\bfseries pulse\+Goal\+\_\+2}
+\item 
+\Hypertarget{asserv_8c_ae306aba7923914c54d605b36c15a7d63}\label{asserv_8c_ae306aba7923914c54d605b36c15a7d63} 
+uint16\+\_\+t {\bfseries K\+\_\+\+CAPT} = 1
+\item 
+\Hypertarget{asserv_8c_a7c36981eb00da751e1964fe73f3d62cf}\label{asserv_8c_a7c36981eb00da751e1964fe73f3d62cf} 
+int32\+\_\+t {\bfseries KI} = 1
+\item 
+\Hypertarget{asserv_8c_ad7d6174cc68a4507b218d7a9a8eea975}\label{asserv_8c_ad7d6174cc68a4507b218d7a9a8eea975} 
+int32\+\_\+t {\bfseries KP} = 1
+\item 
+\Hypertarget{asserv_8c_ac900af102c44c5c6cd7a2496e1ce295f}\label{asserv_8c_ac900af102c44c5c6cd7a2496e1ce295f} 
+int32\+\_\+t {\bfseries erreur} \mbox{[}2\mbox{]} = \{0,0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Ce fichier contient les fonctions d\textquotesingle{}asservissement. 
+
+\begin{DoxyAuthor}{Author}
+Votre Nom 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024 
+\end{DoxyDate}

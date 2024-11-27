@@ -32,7 +32,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart.h \
  ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal_uart_ex.h \
  ../Core/Inc/adc.h ../Core/Inc/main.h ../Core/Inc/dma.h ../Core/Inc/tim.h \
- ../Core/Inc/usart.h ../Core/Inc/gpio.h ../Core/Inc/mylibs/shellv2.h
+ ../Core/Inc/usart.h ../Core/Inc/gpio.h \
+ /Users/romingo/Desktop/ENSEA/3A/TP/2324_ESE3745_CARONELLO_PACE/NUCLEO-G474RET6-Inverter_Pinout/callBack/callBack.h \
+ ../Core/Inc/mylibs/shellv2.h ../Core/Inc/mylibs/asserv.h
 ../Core/Inc/main.h:
 ../Drivers/STM32G4xx_HAL_Driver/Inc/stm32g4xx_hal.h:
 ../Core/Inc/stm32g4xx_hal_conf.h:
@@ -72,4 +74,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/tim.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/gpio.h:
+/Users/romingo/Desktop/ENSEA/3A/TP/2324_ESE3745_CARONELLO_PACE/NUCLEO-G474RET6-Inverter_Pinout/callBack/callBack.h:
 ../Core/Inc/mylibs/shellv2.h:
+../Core/Inc/mylibs/asserv.h:

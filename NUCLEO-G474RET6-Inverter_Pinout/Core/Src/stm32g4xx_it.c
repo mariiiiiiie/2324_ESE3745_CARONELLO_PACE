@@ -44,7 +44,6 @@
 /* USER CODE BEGIN PV */
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
-extern int isADC;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -308,9 +307,5 @@ void TIM6_DAC_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
-	if (hadc->Instance == ADC1){
-		isADC = 1;
-	}
-}
+
 /* USER CODE END 1 */

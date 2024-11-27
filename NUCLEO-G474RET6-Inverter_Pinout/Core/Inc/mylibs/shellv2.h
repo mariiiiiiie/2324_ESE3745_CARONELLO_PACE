@@ -32,6 +32,7 @@ extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern ADC_HandleTypeDef hadc1;
 
+
 void Shell_Init(void);
 void Shell_Loop(void);
 void subfunct_WherisBrian(void);
@@ -40,6 +41,7 @@ void subfunct_speed(void);
 void subfunct_start(void);
 void subfunct_stop(void);
 void subfunct_printADC(void);
+void subfunct_asservI(void);
 void debug(char* debugType,char* message);
 typedef struct{
 	char* name;

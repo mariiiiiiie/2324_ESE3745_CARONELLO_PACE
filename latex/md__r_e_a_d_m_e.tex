@@ -1,0 +1,152 @@
+\chapter{2324\+\_\+\+ESE3745\+\_\+\+CARONELLO\+\_\+\+PACE}
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{2324\_ESE3745\_CARONELLO\_PACE@{2324\_ESE3745\_CARONELLO\_PACE}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{Séance 1 -\/ Commande MCC Basique}{Séance 1 -\/ Commande MCC Basique}}\label{md__r_e_a_d_m_e_autotoc_md1}
+{\itshape Objectifs \+:}
+
+
+\begin{DoxyItemize}
+\item Générer 4 PWM en complémentaire décalée pour contrôler en boucle ouverte le moteur en respectant le cahier des charges,
+\item Inclure le temps mort,
+\item Vérifier les signaux de commande à l\textquotesingle{}oscilloscope,
+\item Prendre en main le hacheur,
+\item Faire un premier essai de commande moteur.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysubsection{\texorpdfstring{Génération 4 PWM}{Génération 4 PWM}}\label{md__r_e_a_d_m_e_autotoc_md2}
+{\itshape Cahier des charges \+:}
+\begin{DoxyItemize}
+\item Fréquence de la PWM \+: 20k\+Hz
+\item Temps mort minimum \+: à voir selon la datasheet des transistors
+\item Résolution minimum \+: 10bits.
+\end{DoxyItemize}
+
+Le temps mort minimum pour les transistors est définit dans la datasheet. S\textquotesingle{}il l\textquotesingle{}on choisisait d\textquotesingle{}optimiser au maximum on ferait..
+
+Cependant, par mesure de précautions, on choisit un temp mort identique pour le temps de montée et de descente à ...
+
+\mbox{[}photo\mbox{]}
+
+\mbox{[}oscilloscope\mbox{]}\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{\texorpdfstring{Commande de vitesse}{Commande de vitesse}}\label{md__r_e_a_d_m_e_autotoc_md3}
+Pour associer une commande à un mot clé entrée dans le terminal on référence le mot clé à une fonction dans une structure {\ttfamily MAPPER} définit si dessous \+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{char}*\ name;}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{char}*\ resume;}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordtype}{char}*\ params;}
+\DoxyCodeLine{\ \ \ \ void\ (*funct)();}
+\DoxyCodeLine{\}MAPPER;}
+
+\end{DoxyCode}
+ On implément ensuite dans un variabel globale le mapping. De cette facon ile st très simple d\textquotesingle{}ajouter une fonction appellable par le shell. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{MAPPER\ mapping[]\ =\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}help"{}},\ \textcolor{stringliteral}{"{}Print\ every\ function\ available"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_help\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}WhereisBrian"{}},\ \textcolor{stringliteral}{"{}If\ you\ don't\ know\ where\ brian\ is"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_WherisBrian\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}speed"{}},\ \textcolor{stringliteral}{"{}Change\ the\ speed\ of\ the\ DC\ motor"{}},\ \textcolor{stringliteral}{"{}str:RPM"{}},\ subfunct\_speed\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}start"{}},\ \textcolor{stringliteral}{"{}Start\ PWM,\ DC\ Motor\ set\ up\ with\ the\ minimum\ speed"{}},\textcolor{stringliteral}{"{}None"{}},\ subfunct\_start\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}stop"{}},\ \textcolor{stringliteral}{"{}Stop\ PWM"{}},\textcolor{stringliteral}{"{}None"{}},subfunct\_stop\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}adc"{}},\textcolor{stringliteral}{"{}Défini\ l'incrément\ \ pour\ la\ transition\ de\ a\ consigne\ moteur"{}},\textcolor{stringliteral}{"{}int:dPulse"{}},subfunct\_printADC\},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}asservI"{}},\textcolor{stringliteral}{"{}None"{}},\textcolor{stringliteral}{"{}int:\ mA"{}},subfunct\_asservI\},}
+\DoxyCodeLine{\};}
+
+\end{DoxyCode}
+ Pour chaque caractère traité, on va vérifier si c\textquotesingle{}est le caractère {\ttfamily Entrée}. Si ce n\textquotesingle{}est pas le cas alors on ajoute le caractère au buffer {\ttfamily uart\+Rx\+Buffer}, autrement on termine l\textquotesingle{}écoute de l\textquotesingle{}uart en séparant tous les arguments séparés par un espace dans {\ttfamily argv\mbox{[}\mbox{]}}. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{switch}(uartRxBuffer[0])\{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{case}\ ASCII\_CR:\ \textcolor{comment}{//\ Nouvelle\ ligne,\ instruction\ à\ traiter}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ HAL\_UART\_Transmit(\&huart2,\ newline,\ \textcolor{keyword}{sizeof}(newline),\ HAL\_MAX\_DELAY);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ cmdBuffer[idx\_cmd]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ argc\ =\ 0;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ token\ =\ strtok(cmdBuffer,\ \textcolor{stringliteral}{"{}\ "{}});}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(token!=NULL)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ argv[argc++]\ =\ token;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ token\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}\ "{}});}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ idx\_cmd\ =\ 0;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ newCmdReady\ =\ 1;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\ \ \ \ [...Suite\ du\ code...]\ \ \ }
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ Lorsque le shell à finit de reçevoir une commande. Il faut qu\textquotesingle{}il parcourt l\textquotesingle{}entièreté du {\ttfamily MAPPER mapping} pour vérifier que la fonction est repertoriée. Si elle est repertoriée alors utilise la strucutre pour trouver la fonction associée. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordflow}{if}(newCmdReady)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i=0;i<\textcolor{keyword}{sizeof}(mapping)\ /\ \textcolor{keyword}{sizeof}(mapping[0]);i++)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(argv[0],mapping[i].name)==0)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mapping[i].funct();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ isFind=1;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ [...Suite\ du\ code...]}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+De cette manière on est capable de traiter une commande {\ttfamily speed xxxx}. Nous choisissons que l\textquotesingle{}argument de {\ttfamily speed} sera le rapport cyclique de la PWM.
+
+La focntion qui traite l\textquotesingle{}entrée {\ttfamily speed xxxx} est la fonction {\ttfamily subfunct\+\_\+start} elle sera décrite dans une premier temps comme ci dessous\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ subfunct\_speed(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\ \ \ \ uint32\_t\ alpha\ =\ atoi(argv[1]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ pulseGoal\_1\ =\ alpha\ *\ htim1.Instance-\/>ARR\ /100;}
+\DoxyCodeLine{\ \ \ \ pulseGoal\_2\ =\ htim1.Instance-\/>ARR\ -\/\ pulseGoal\_1;}
+\DoxyCodeLine{\ \ \ \ \_\_HAL\_TIM\_SET\_COMPARE(\&htim1,\ TIM\_CHANNEL\_1,\ pulseGoal\_1);}
+\DoxyCodeLine{\ \ \ \ \_\_HAL\_TIM\_SET\_COMPARE(\&htim1,\ TIM\_CHANNEL\_2,\ pulseGoal\_2);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ \hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{\texorpdfstring{Premiers tests}{Premiers tests}}\label{md__r_e_a_d_m_e_autotoc_md4}
+Cette facon de faire n\textquotesingle{}est pas optimale car l\textquotesingle{}appel en courant est excessivement important lorsque la consigne de vitesse passe de 0\% à ±100\%.
+
+On décide donc de créer une consigne de vitesse en rampe. Pour faire cela, on créer un timer {\ttfamily TIM2} synchonisé sur toute les 1ms. Plutôt que de mettre à jour le pulse dans la fonction {\ttfamily subfunct\+\_\+speed}, on va le faire progressivement dans le call\+Back du {\ttfamily TIM2}. 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ subfunct\_speed(\textcolor{keywordtype}{void})\{}
+\DoxyCodeLine{\ \ \ \ uint32\_t\ alpha\ =\ atoi(argv[1]);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ pulseGoal\_1\ =\ alpha\ *\ htim1.Instance-\/>ARR\ /100;}
+\DoxyCodeLine{\ \ \ \ pulseGoal\_2\ =\ htim1.Instance-\/>ARR\ -\/\ pulseGoal\_1;}
+\DoxyCodeLine{\ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\textcolor{comment}{\ \ \ \ \ *\ htim2\ is\ going\ to\ actualise\ pulses\ every\ 1ms:\ CHECK\ Interruptions\ for\ more\ details}}
+\DoxyCodeLine{\textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{void}\ HAL\_TIM\_PeriodElapsedCallback(TIM\_HandleTypeDef*\ htim)\{}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}(htim-\/>Instance==\ TIM2)\{\ \textcolor{comment}{//\ Timer\ for\ smooth\ transition}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ uint32\_t\ pulse\_1\ =\ htim1.Instance-\/>CCR1;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ uint32\_t\ pulse\_2\ =\ htim1.Instance-\/>CCR2;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pulse\_1!=\ pulseGoal\_1)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ sign\_1\ =\ pulse\_1\ >\ pulseGoal\_1?}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/1:1;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \_\_HAL\_TIM\_SET\_COMPARE(\&htim1,\ TIM\_CHANNEL\_1,\ pulse\_1\ +\ sign\_1);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pulse\_2!=pulseGoal\_2)\{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ sign\_2\ =\ pulse\_2\ >\ pulseGoal\_2?}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/1:1;}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \_\_HAL\_TIM\_SET\_COMPARE(\&htim1,\ TIM\_CHANNEL\_2,\ pulse\_2\ +\ sign\_2);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ [...Suite\ du\ code...]}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+De cette facon on obtiens un vitesse progressive qui limite l\textquotesingle{}appel en courant par le moteur. \hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysection{\texorpdfstring{Séance 2 -\/ Commande En Boucle Ouverte, Mesure De Vitesse Et De Courant}{Séance 2 -\/ Commande En Boucle Ouverte, Mesure De Vitesse Et De Courant}}\label{md__r_e_a_d_m_e_autotoc_md5}
+{\itshape Objectifs \+:}
+
+
+\begin{DoxyItemize}
+\item Commander en boucle ouverte le moteur avec une accélération limitée,
+\item Mesurer le courant aux endroits adéquat dans le montage,
+\item Mesurer la vitesse à partir du codeur présent sur chaque moteur. 
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsection{\texorpdfstring{Commande de la vitesse}{Commande de la vitesse}}\label{md__r_e_a_d_m_e_autotoc_md6}
+Dans cette partie on met un point d\textquotesingle{}honneur sur la lisibilité du code afin que tout les appels des fonctions {\ttfamily HAL\+\_\+\+XXX\+\_\+()} soit surveiller, pour qu\textquotesingle{}en cas d\textquotesingle{}échec l\textquotesingle{}utilisateur du shell soit averti.\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{Mesure du courant}{Mesure du courant}}\label{md__r_e_a_d_m_e_autotoc_md7}
+\mbox{[}kicad\mbox{]} Pour mesurer correctement \mbox{[}config\+\_\+.\+ioc\mbox{]} \mbox{[}photo\+\_\+oscillo\+\_\+output\+\_\+finde\+ADC\mbox{]} \hypertarget{md__r_e_a_d_m_e_autotoc_md8}{}\doxysection{\texorpdfstring{Séance 3 -\/ Asservissement}{Séance 3 -\/ Asservissement}}\label{md__r_e_a_d_m_e_autotoc_md8}

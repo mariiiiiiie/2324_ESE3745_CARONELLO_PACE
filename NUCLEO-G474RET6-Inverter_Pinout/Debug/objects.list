@@ -10,6 +10,7 @@
 "./Core/Src/system_stm32g4xx.o"
 "./Core/Src/tim.o"
 "./Core/Src/usart.o"
+"./Core/Src/mylibs/asserv.o"
 "./Core/Src/mylibs/shellv2.o"
 "./Core/Startup/startup_stm32g474retx.o"
 "./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.o"
@@ -32,3 +33,4 @@
 "./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.o"
 "./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart_ex.o"
 "./Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.o"
+"./callBack/callBack.o"
